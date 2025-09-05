@@ -1,0 +1,35 @@
+flowchart LR
+  User["User / Attacker"] --|Malicious input (SQLi)|--> WAF["WAF"]
+  WAF -- "Blocked (rule match)" --> Blocked["403 / Challenge"]:::detect
+  WAF -- "Miss / bypass" --> ALB["ALB / API Gateway"]
+  ALB --> App["App Tier (EC2, ECS, Lambda)"]
+
+  App --|Prepared statements / ORM|--> SafeQuery["Parametrized Query"]:::prevent
+  App -. "Unsanitized input" .-> RiskQuery["Dynamic SQL"]:::attack
+
+  SafeQuery --> DB["RDS, Azure SQL, Cloud SQL"]
+  RiskQuery --> DB
+
+  App --> Secrets["Secrets Manager / KMS"]:::prevent
+  Secrets --> App
+  App --> IAM["IAM Role (least privilege)"]:::prevent
+  IAM --> DB
+
+  ALB --> SG["Security Groups / NSGs"]:::prevent
+  SG --> App
+  App --> SG2["DB SG / Private Subnet"]:::prevent
+  SG2 --> DB
+
+  WAF --> WAFLogs["WAF Logs"]
+  App --> AppLogs["App Logs"]
+  DB --> DBLogs["DB / Audit Logs"]
+  WAFLogs --> SIEM["SIEM"]
+  AppLogs --> SIEM
+  DBLogs --> SIEM
+  SIEM --> SOAR["SOAR / Response"]:::detect
+
+  SOAR --> Actions["Block IP / Rotate Secrets / Disable User / Rollback"]:::detect
+
+  classDef attack fill:#ffe6e6,stroke:#c00,stroke-width:1px;
+  classDef prevent fill:#e6f7ff,stroke:#06c,stroke-width:1px;
+  classDef detect fill:#fff7e6,stroke:#c60,stroke-width:1px;

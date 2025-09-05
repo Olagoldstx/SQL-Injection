@@ -1,0 +1,24 @@
+flowchart TB
+  subgraph VPC["Virtual Private Cloud"]
+    direction TB
+    subgraph PublicSubnet["Public Subnet"]
+      ALB["Application Load Balancer"]
+    end
+    subgraph PrivateSubnet["Private Subnet"]
+      App["App Tier (EC2, ECS, Lambda)"]
+      DB["Database: RDS, Azure SQL, Cloud SQL"]
+    end
+  end
+  User["User / Pen-Tester"] --|HTTPS|--> WAF["WAF (AWS/Azure/Cloudflare)"]
+  WAF --> ALB
+  ALB --> App
+  App --> DB
+
+  DB --> Logs["DB Audit Logs"]
+  App --> AppLogs["App Logs"]
+  WAF --> WAFLogs["WAF Logs"]
+
+  Logs --> SIEM["SIEM (Splunk, Sentinel)"]
+  AppLogs --> SIEM
+  WAFLogs --> SIEM
+  SIEM --> SOAR["SOAR / Automated Response"]

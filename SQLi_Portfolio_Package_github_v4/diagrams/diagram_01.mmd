@@ -1,0 +1,13 @@
+flowchart LR
+  User["User / Pen-Tester"] --|HTTPS|--> WAF["AWS WAF, Azure WAF, Cloudflare"]
+  WAF --> CDN["CDN / CloudFront"]
+  CDN --> ALB["ALB / API Gateway"]
+  ALB --> App["App Tier (EC2, ECS, Lambda)"]
+  App --> DB["Managed DB: RDS, Azure SQL, Cloud SQL"]
+  DB --> Logs["DB Audit / General Logs"]
+  WAF --> WAFLogs["WAF Logs"]
+  App --> AppLogs["App Logs"]
+  Logs --> SIEM["SIEM (Splunk, Sentinel)"]
+  WAFLogs --> SIEM
+  AppLogs --> SIEM
+  SIEM --> SOAR["SOAR / Alerts"]

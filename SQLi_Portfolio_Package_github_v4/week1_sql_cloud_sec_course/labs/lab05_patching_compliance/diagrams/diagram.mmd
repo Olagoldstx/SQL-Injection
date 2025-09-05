@@ -1,0 +1,7 @@
+
+flowchart LR
+  Client[User/Service] -->|TLS| Net[Network Boundary]
+  Net --> WAF[WAF/Firewall]
+  WAF --> DB[(Managed SQL)]
+  DB --> Logs[(Audit/Access Logs)]
+  Logs --> SIEM[SIEM/Alerts]

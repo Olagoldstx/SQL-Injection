@@ -1,7 +1,5 @@
 ```mermaid
-
 flowchart TD
-
     %% =======================
     %% MAIN SYSTEM OVERVIEW
     %% =======================
@@ -17,14 +15,14 @@ flowchart TD
     C --> C1[AWS EC2 Module]
     C --> C2[AWS Network<br/>Zero Trust SG]
     C --> C3[AWS Application Load Balancer]
-    C --> C4[AWS Monitoring<br/>(CloudTrail, FlowLogs, GuardDuty, SecurityHub)]
+    C --> C4[AWS Monitoring]
     C --> C5[AWS SIEM Buckets]
 
-    C1 --> C1a[EC2 Instance (Ubuntu 22.04)]
+    C1 --> C1a[EC2 Instance<br/>Ubuntu 22.04]
     C2 --> C2a[Zero Trust: Deny All Ingress<br/>Allow 443 Egress]
     C3 --> C3a[ALB Listener -> Target Group]
-    C4 --> C4a[S3 Logs / Events]
-    C5 --> C5a[CloudTrail<br/>FlowLogs<br/>ALB Logs<br/>GuardDuty Findings]
+    C4 --> C4a[CloudTrail, FlowLogs<br/>GuardDuty, SecurityHub]
+    C5 --> C5a[CloudTrail Logs<br/>FlowLogs<br/>ALB Logs<br/>GuardDuty Findings]
 
     %% =======================
     %% AZURE
@@ -32,12 +30,12 @@ flowchart TD
     D --> D1[Azure VM Module]
     D --> D2[Azure Network<br/>Zero Trust NSG]
     D --> D3[Azure Load Balancer]
-    D --> D4[Azure Monitoring<br/>(LAW, Defender, Diagnostics)]
+    D --> D4[Azure Monitoring]
 
     D1 --> D1a[Linux VM]
-    D2 --> D2a[Deny All Inbound + Allow 443 Outbound]
+    D2 --> D2a[Deny All Inbound<br/>Allow 443 Outbound]
     D3 --> D3a[Public IP + Backend Pool]
-    D4 --> D4a[Log Analytics + Defender Alerts]
+    D4 --> D4a[Log Analytics Workspace<br/>Defender Alerts<br/>Diagnostics]
 
     %% =======================
     %% GCP
@@ -45,12 +43,12 @@ flowchart TD
     E --> E1[GCP Compute Engine Module]
     E --> E2[GCP Network<br/>Zero Trust Firewall]
     E --> E3[GCP HTTPS Load Balancer]
-    E --> E4[GCP Monitoring<br/>(SCC, Flow Logs, Audit Logs)]
+    E --> E4[GCP Monitoring]
 
     E1 --> E1a[e2-micro VM]
-    E2 --> E2a[Inbound Deny + Outbound Restrict]
-    E3 --> E3a[Global HTTPS LB -> Backend Service]
-    E4 --> E4a[SCC Findings + Logging Sink]
+    E2 --> E2a[Inbound Deny<br/>Outbound Restrict]
+    E3 --> E3a[Global HTTPS LB<br/>Backend Service]
+    E4 --> E4a[Security Command Center<br/>Flow Logs<br/>Audit Logs]
 
     %% =======================
     %% SIEM PIPELINE
